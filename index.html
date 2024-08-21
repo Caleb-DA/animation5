@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<body>
+<style>
+html {
+    height: 100%;
+    background-image: url("https://i.gifer.com/AwA4.gif");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#mydiv {
+  background-size: 60px 60px;
+  position: absolute;
+  z-index: 9;
+  background: rgba(0,0,0,0.5);
+}
+#container {
+height: 100%;
+width: 100%;
+position: relative;
+}
+#animate {
+  background-size: 55px 55px;
+  position: absolute;
+}
+</style>
+
+<div id="mydiv">
+  <div id="mydivheader"><img src="https://png.pngtree.com/png-clipart/20220611/ourmid/pngtree-blue-whale-swimming-png-image_4963644.png" width="130" height="100"></div>
+</div>
+
+<p><button onclick="myMove()">Click this and Drag whale away from ship</button></p> 
+<div id="container"></div>
+<div id ="animate"><img src="https://png.pngtree.com/png-vector/20240416/ourmid/pngtree-sailboat-ship-colorful-png-image_12289351.png" width="100" height="130"></div>
+
+
+<script>
+//Make the DIV element draggagle:
+dragElement(document.getElementById("mydiv"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+function myMove() {
+  let id = null;
+  const elem = document.getElementById("animate");   
+  let pos = 0;
+  clearInterval(id);
+  id = setInterval(frame, 4);
+  function frame() {
+    if (pos == 480) {
+      clearInterval(id);
+    } else {
+      pos++; 
+      elem.style.top = pos + "px"; 
+      elem.style.left = pos + "px"; 
+    }
+  }
+}
+</script>
+
+</body>
+</html>
